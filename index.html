@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Góc Việt Tử Tế | THPT Trà Bồng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CẤU HÌNH MÀU SẮC --- */
+        :root {
+            --primary-color: #43a047; 
+            --light-green: #76d275;
+            --secondary-color: #f9fbe7; 
+            --accent-color: #ffffff; 
+            --text-color: #333;
+            --pastel-red: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --pastel-mint: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        body { background-color: var(--secondary-color); color: var(--text-color); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        
+        /* HEADER & HERO */
+        header { background-color: var(--primary-color); color: #fff; padding: 1rem 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        .logo h1 { font-size: 1.5rem; text-transform: uppercase; font-weight: 700; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        nav ul { display: flex; gap: 20px; list-style: none; }
+        nav a:hover { color: var(--accent-color); transition: color 0.3s; }
+
+        .hero {
+            background: linear-gradient(rgba(67, 160, 71, 0.9), rgba(118, 210, 117, 0.9)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Truong_THPT_Tra_Bong.jpg/1200px-Truong_THPT_Tra_Bong.jpg');
+            background-size: cover; background-position: center; color: #fff; text-align: center; padding: 60px 20px;
+        }
+        .hero h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 3.5rem; margin-bottom: 10px; text-shadow: 2px 2px 6px rgba(0,0,0,0.4); }
+        .hero .project-info { font-size: 1.3rem; margin-bottom: 30px; font-weight: bold; color: #fffde7; }
+        
+        /* --- STYLE CHO LỜI CẢM ƠN --- */
+        .acknowledgment-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            text-align: left;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .acknowledgment-title {
+            color: #ffeb3b;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+        .acknowledgment-content p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #fff;
+        }
+        .teacher-name {
+            font-weight: bold;
+            color: #ffeb3b;
+            font-size: 1.2rem;
+        }
+
+        .hero .intro-text { font-size: 1.1rem; max-width: 800px; margin: 0 auto; opacity: 0.95; line-height: 1.8; }
+
+        /* SECTIONS */
+        .section-title { text-align: center; margin: 60px 0 30px; color: var(--primary-color); text-transform: uppercase; font-weight: 800; }
+        .weekly-update { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .pastel-card { border-radius: 20px; padding: 30px; color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: transform 0.3s; position: relative; overflow: hidden; }
+        .pastel-card:hover { transform: translateY(-5px); }
+        .card-alert { background-image: var(--pastel-red); }
+        .card-suggest { background-image: var(--pastel-mint); color: #2e7d32; }
+        .card-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .card-header { font-size: 1.5rem; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
+
+        /* VOTING */
+        .voting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .vote-card { background: #fff; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); padding: 20px; text-align: center; position: relative; border: 2px solid transparent; transition: 0.3s; }
+        .vote-card:hover { border-color: var(--primary-color); transform: translateY(-5px); }
+        .vs-badge { background: var(--accent-color); color: var(--primary-color); border: 2px solid var(--primary-color); font-weight: bold; width: 45px; height: 45px; line-height: 41px; border-radius: 50%; margin: -10px auto 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .comparison { display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px; }
+        .word-slang { color: #e53935; font-weight: bold; text-decoration: line-through; opacity: 0.7; font-size: 1.1rem; }
+        .word-standard { color: var(--primary-color); font-weight: bold; font-size: 1.3rem; }
+        .vote-btn { background: var(--primary-color); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 6px rgba(67, 160, 71, 0.3); }
+        .vote-btn:hover { background: var(--light-green); transform: translateY(-2px); }
+        .vote-count { display: block; margin-top: 10px; font-size: 0.9rem; color: #666; font-style: italic; }
+
+        /* FLIP CARDS & SEARCH */
+        .search-container { max-width: 600px; margin: 0 auto 40px; position: relative; }
+        .search-box { width: 100%; padding: 15px 50px 15px 25px; border-radius: 50px; border: 2px solid var(--primary-color); font-size: 1.1rem; outline: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; background: #fff; }
+        .search-box:focus { box-shadow: 0 4px 15px rgba(67, 160, 71, 0.3); border-color: var(--light-green); }
+        .search-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .search-btn:hover { background: var(--light-green); }
+
+        .flip-container-wrapper { display: flex; justify-content: center; gap: 20px; perspective: 1000px; cursor: pointer; margin-bottom: 40px; }
+        .flip-container-wrapper.active .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card { background-color: transparent; width: 320px; height: 280px; perspective: 1000px; } 
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; box-shadow: 0 6px 12px rgba(0,0,0,0.15); border-radius: 20px; }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 20px; padding: 25px; }
+        .flip-card-front { background-color: #fff; color: var(--primary-color); border: 3px solid var(--primary-color); }
+        .flip-card-back { background-color: #ffffff; color: var(--primary-color); border: 3px solid var(--light-green); transform: rotateY(180deg); }
+        .word-content { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; word-wrap: break-word; }
+        .context { font-size: 0.9rem; color: #555; background: var(--secondary-color); padding: 8px 10px; border-radius: 10px; width: 100%; margin-bottom: 5px; }
+        .click-hint { text-align: center; margin-bottom: 25px; font-style: italic; color: #666; animation: blink 2s infinite; }
+        @keyframes blink { 50% { opacity: 0.5; } }
+
+        .study-controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 60px; flex-wrap: wrap; }
+        .btn-control { padding: 12px 25px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+        .btn-skip { background-color: #e0e0e0; color: #555; }
+        .btn-next { background-color: var(--primary-color); color: white; box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3); padding: 12px 35px; }
+        .btn-next:hover { background-color: var(--light-green); transform: translateY(-2px); }
+
+        /* --- BẢNG XẾP HẠNG TOP 50 --- */
+        .ranking-section { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 60px; }
+        .ranking-box { background: #fff; padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; max-height: 550px; }
+        .ranking-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid var(--secondary-color); }
+        .ranking-header h4 { font-size: 1.3rem; color: var(--primary-color); text-transform: uppercase; font-weight: bold; }
+        
+        .table-scroll-container { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
+        .table-scroll-container::-webkit-scrollbar { width: 6px; }
+        .table-scroll-container::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 4px; }
+        
+        .custom-table { width: 100%; border-collapse: collapse; }
+        .custom-table th { text-align: left; padding: 15px; color: #666; font-size: 0.95rem; font-weight: bold; position: sticky; top: 0; background: #fff; z-index: 10; border-bottom: 2px solid #eee; }
+        .custom-table td { padding: 12px; border-bottom: 1px solid #eee; font-weight: 500; font-size: 0.95rem;}
+        
+        .rank-num { display: inline-block; width: 28px; height: 28px; background: #eee; border-radius: 50%; text-align: center; line-height: 28px; font-size: 0.8rem; font-weight: bold; color: #555; }
+        .rank-1 { background: #ffc107; color: #fff; border: none; box-shadow: 0 2px 5px rgba(255, 193, 7, 0.4); } 
+        .rank-2 { background: #9e9e9e; color: #fff; border: none; } 
+        .rank-3 { background: #cd7f32; color: #fff; border: none; } 
+        
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-left: 5px; }
+        .badge-vip { background: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; } /* Cam */
+        .badge-gold { background: #fff8e1; color: #fbc02d; border: 1px solid #ffecb3; } /* Vàng */
+        .badge-silver { background: #f5f5f5; color: #616161; border: 1px solid #e0e0e0; } /* Bạc */
+        .badge-bronze { background: #efebe9; color: #8d6e63; border: 1px solid #d7ccc8; } /* Đồng */
+        .badge-new { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; } /* Xanh */
+
+        /* --- FORM NHẬP LIỆU --- */
+        .contribution-section { 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+            max-width: 900px; 
+            margin: 0 auto; 
+        }
+
+        .form-row { display: flex; gap: 25px; margin-bottom: 20px; }
+        .form-group { flex: 1; }
+
+        .form-group label { 
+            display: block; 
+            margin-bottom: 12px; 
+            font-weight: 800; 
+            color: var(--primary-color); 
+            font-size: 1.3rem;
+        }
+
+        .form-group input, textarea { 
+            width: 100%; 
+            padding: 20px; 
+            border: 2px solid #ccc; 
+            border-radius: 15px; 
+            font-size: 1.4rem;
+            transition: 0.3s; 
+            background: #fff; 
+            color: #333;
+        }
+
+        .form-group input:focus, textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(67, 160, 71, 0.3);
+            background-color: #f1f8e9;
+        }
+
+        .submit-btn { 
+            width: 100%; 
+            padding: 20px; 
+            background: var(--primary-color); 
+            color: #fff; 
+            border: none; 
+            border-radius: 15px; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: 0.3s; 
+            box-shadow: 0 6px 15px rgba(67, 160, 71, 0.4); 
+            text-transform: uppercase;
+        }
+
+        footer { background: var(--primary-color); color: #fff; text-align: center; padding: 30px; margin-top: 80px; }
+
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 2.5rem; }
+            .weekly-update, .flip-container-wrapper, .form-row, .ranking-section, .voting-grid { flex-direction: column; grid-template-columns: 1fr; }
+            .flip-card { width: 100%; margin-bottom: 15px; }
+            .ranking-box { max-height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Góc Việt Tử Tế</h1>
+                <span style="font-size: 0.85rem;">THPT Trà Bồng</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#binhchon">Bình chọn</a></li>
+                    <li><a href="#tracuu">Tra cứu</a></li>
+                    <li><a href="#xephang">Xếp hạng</a></li>
+                    <li><a href="#donggop">Đóng góp</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>"Giữ Gìn Sự Trong Sáng Của Tiếng Việt"</h2>
+            <p class="project-info">Dự án của Lê Võ Cẩm Tú & Bùi Thị Hồng Thắm - Lớp 12C1</p>
+            
+            <div class="acknowledgment-box">
+                <h3 class="acknowledgment-title"><i class="fas fa-award"></i> Lời Tri Ân</h3>
+                <div class="acknowledgment-content">
+                    <p>
+                        <i class="fas fa-chalkboard-teacher" style="color:#ffeb3b; margin-right:5px;"></i> 
+                        Giáo viên hướng dẫn: <span class="teacher-name">Cô Võ Thị Sự</span> (Môn Ngữ văn).
+                    </p>
+                    <p style="font-style: italic;">
+                        "Nhóm chúng em xin bày tỏ lòng biết ơn sâu sắc đến cô Võ Thị Sự – người đã tận tình chỉ dẫn, góp ý chuyên môn và đồng hành cùng chúng em trong suốt quá trình thực hiện đề tài."
+                    </p>
+                    <hr style="border:0; border-top:1px dashed rgba(255,255,255,0.3); margin: 15px 0;">
+                    <p style="font-style: italic;">
+                        "Đồng thời, chúng em xin chân thành cảm ơn <span class="teacher-name">Thầy Nguyễn Văn Thanh</span> đã nhiệt tình hỗ trợ trong việc dịch thuật tiếng Cor, góp phần quan trọng giúp đề tài được hoàn thiện về mặt nội dung và ngôn ngữ."
+                    </p>
+                </div>
+            </div>
+            <div class="intro-text">
+                <p>Chào mừng bạn đến với không gian tôn vinh vẻ đẹp của Tiếng Việt! Nơi đây, chúng mình cùng nhau nhận diện và điều chỉnh thói quen sử dụng ngôn ngữ, lan tỏa những lời hay ý đẹp, góp phần xây dựng môi trường học đường văn minh và giữ gìn bản sắc văn hóa dân tộc trong thời đại số.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <h3 class="section-title">Tiêu Điểm Tuần Này</h3>
+        <div class="weekly-update">
+            <div class="pastel-card card-alert">
+                <i class="fas fa-bell card-icon"></i>
+                <div class="card-header">Từ Lóng Cảnh Báo</div>
+                <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">"Gất ô dề"</p>
+                <p>Biến âm sai lệch, làm mất đi vẻ đẹp thanh điệu của tiếng Việt. Nên tránh sử dụng.</p>
+            </div>
+            <div class="pastel-card card-suggest">
+                <i class="fas fa-lightbulb card-icon"></i>
+                <div class="card-header">Gợi ý thay thế</div>
+                <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">"Lố lăng / Quá đà"</p>
+                <p>Hãy dùng từ ngữ chính xác để diễn tả hành động vượt quá giới hạn một cách văn minh.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="binhchon" class="container">
+        <h3 class="section-title">Thử Thách: Nói Sao Cho Chuẩn?</h3>
+        <p style="text-align: center; margin-bottom: 30px; font-size: 1.1rem;">Cùng bình chọn cho cách dùng từ văn minh bạn nhé!</p>
+        <div class="voting-grid">
+            <div class="vote-card">
+                <div class="vs-badge">VS</div>
+                <div class="comparison">
+                    <span class="word-slang">"Chằm Zn"</span>
+                    <i class="fas fa-arrow-right" style="color:#ccc"></i>
+                    <span class="word-standard">"Mệt mỏi"</span>
+                </div>
+                <button class="vote-btn" onclick="vote(this)">
+                    <i class="fas fa-heart"></i> Chọn Tiếng Việt
+                </button>
+                <span class="vote-count">125 bạn đã chọn</span>
+            </div>
+            <div class="vote-card">
+                <div class="vs-badge">VS</div>
+                <div class="comparison">
+                    <span class="word-slang">"Pha ke"</span>
+                    <i class="fas fa-arrow-right" style="color:#ccc"></i>
+                    <span class="word-standard">"Giả mạo"</span>
+                </div>
+                <button class="vote-btn" onclick="vote(this)">
+                    <i class="fas fa-heart"></i> Chọn Tiếng Việt
+                </button>
+                <span class="vote-count">89 bạn đã chọn</span>
+            </div>
+            <div class="vote-card">
+                <div class="vs-badge">VS</div>
+                <div class="comparison">
+                    <span class="word-slang">"Xì chét"</span>
+                    <i class="fas fa-arrow-right" style="color:#ccc"></i>
+                    <span class="word-standard">"Căng thẳng"</span>
+                </div>
+                <button class="vote-btn" onclick="vote(this)">
+                    <i class="fas fa-heart"></i> Chọn Tiếng Việt
+                </button>
+                <span class="vote-count">210 bạn đã chọn</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="tracuu" class="container">
+        <h3 class="section-title">Tra Cứu Từ Điển (Online)</h3>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="Nhập từ lóng bạn muốn tìm... (VD: Lemỏn, Chằm Zn)" onkeyup="searchWord()">
+            <button class="search-btn" onclick="searchWord()"><i class="fas fa-search"></i></button>
+        </div>
+        <p style="text-align: center; color: #666; font-size: 0.9rem;" id="resultCount">Đang tải dữ liệu từ Google Sheets...</p>
+    </section>
+
+    <section class="container">
+        <p class="click-hint"><i class="fas fa-hand-pointer"></i> Bấm vào bất kỳ thẻ nào để lật mở đáp án!</p>
+        
+        <div class="flip-container-wrapper" onclick="flipAll(this)">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fas fa-comments" style="font-size: 2.2rem; margin-bottom: 15px; color: #d32f2f;"></i>
+                        <h3>Tiếng Lóng (Gen Z)</h3>
+                        <p id="displaySlang" class="word-content" style="color:#d32f2f; font-size: 1.6rem; font-weight:bold;">...</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Ý nghĩa:</p>
+                        <h3 id="displayMeaning" class="word-content">...</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fas fa-book" style="font-size: 2.2rem; margin-bottom: 15px; color: var(--primary-color);"></i>
+                        <h3>Tiếng Việt Chuẩn</h3>
+                        <p class="hint">(Lật để xem)</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Từ chuẩn:</p>
+                        <h3 id="displayStandard" class="word-content">...</h3>
+                        <div class="context">
+                            <strong id="displayContext">...</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fas fa-mountain" style="font-size: 2.2rem; margin-bottom: 15px; color: #f57f17;"></i>
+                        <h3>Tiếng Cor</h3>
+                        <p class="hint">(Ngôn ngữ địa phương)</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Trong tiếng Cor nói là:</p>
+                        <h3 class="word-content" id="displayCor">...</h3> 
+                        <span style="font-size: 0.9rem;">(Cần bổ sung bởi các bạn học sinh người Cor)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="study-controls">
+            <button class="btn-control btn-skip">
+                <i class="fas fa-forward"></i> Bỏ qua
+            </button>
+            <button class="btn-control btn-next" onclick="nextWord()">
+                Tiếp theo <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <section id="xephang" class="container">
+        <h3 class="section-title">Bảng Vàng Ghi Danh (Online)</h3>
+        <div class="ranking-section">
+            <div class="ranking-box">
+                <div class="ranking-header">
+                    <i class="fas fa-fire" style="color: #e53935; font-size: 1.6rem;"></i>
+                    <h4>Top Từ Lóng Đang Hot</h4>
+                </div>
+                <div class="table-scroll-container">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">Hạng</th>
+                                <th>Từ lóng</th>
+                                <th style="text-align: right;">Lượt tra cứu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rank-num rank-1">1</span></td><td>Chằm Zn 🔥</td><td style="text-align: right;">1,250</td></tr>
+                            <tr><td><span class="rank-num rank-2">2</span></td><td>Pha ke 😎</td><td style="text-align: right;">980</td></tr>
+                            <tr><td><span class="rank-num rank-3">3</span></td><td>Gất ô dề 😵</td><td style="text-align: right;">850</td></tr>
+                            <tr><td><span class="rank-num">4</span></td><td>Tới công chuyện</td><td style="text-align: right;">720</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="ranking-box">
+                <div class="ranking-header">
+                    <i class="fas fa-crown" style="color: var(--primary-color); font-size: 1.6rem;"></i>
+                    <h4>Top 50 Sứ Giả Tiếng Việt</h4>
+                </div>
+                <div class="table-scroll-container">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>Họ và Tên</th>
+                                <th style="text-align: right;">Đóng góp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top50Table">
+                             <tr><td colspan="3" style="text-align:center">Đang tải bảng xếp hạng...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="donggop" class="container">
+        <h3 class="section-title">Đóng Góp Từ Điển Mới</h3>
+        <div class="contribution-section">
+            <p style="text-align: center; margin-bottom: 30px; font-size: 1.1rem;">Dữ liệu sẽ được lưu trực tiếp lên Google Sheets của Dự Án.</p>
+            
+            <form id="formDongGop" onsubmit="xuLyGuiForm(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Họ tên:</label>
+                        <input type="text" id="inpHoTen" placeholder="Tên của bạn" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Lớp:</label>
+                        <input type="text" id="inpLop" placeholder="Lớp" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Từ Lóng (Cần sửa):</label>
+                        <input type="text" id="inpTuLong" placeholder="Ví dụ: Lemỏn" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tiếng Việt chuẩn:</label>
+                        <input type="text" id="inpTiengViet" placeholder="Ví dụ: Chảnh" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tiếng Cor (Nếu biết):</label>
+                        <input type="text" id="inpTiengCor" placeholder="Nhập từ tiếng Cor...">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 30px;">
+                    <label>Giải thích thêm:</label>
+                    <textarea id="inpGiaiThich" rows="3" placeholder="Ngữ cảnh sử dụng từ này..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Gửi Đóng Góp</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Dự án Góc Việt Tử Tế - Trường THPT Trà Bồng</p>
+    </footer>
+
+    <script>
+        // --- 1. KẾT NỐI ONLINE (Đã gắn link của bạn) ---
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwBY2Js56nlElsApQFXYePtQobhHITTbDIapl6UMeTQPF8t-5e3kEu594xUfd1mgLmPrg/exec"; 
+        
+        const defaultDictionaryData = [
+            { slang: "Chằm Zn", standard: "Trầm Cảm", context: "Mệt mỏi, áp lực", cor: "[Chưa rõ]", contributor: "Admin" },
+            { slang: "Pha ke", standard: "Giả mạo", context: "Đồ nhái", cor: "[Chưa rõ]", contributor: "Admin" },
+            { slang: "Gất ô dề", standard: "Lố lăng", context: "Làm quá mức cần thiết", cor: "[Chưa rõ]", contributor: "Admin" },
+            { slang: "Lemỏn", standard: "Chảnh", context: "Thái độ kiêu căng", cor: "[Chưa rõ]", contributor: "Admin" },
+            { slang: "Tới công chuyện", standard: "Có biến", context: "Sắp có việc rắc rối", cor: "[Chưa rõ]", contributor: "Admin" }
+        ];
+
+        let dictionary = []; // Sẽ chứa dữ liệu tải về từ Google Sheets
+
+        // --- 2. TẢI DỮ LIỆU TỪ GOOGLE SHEETS (Hàm MỚI) ---
+        async function loadDataFromSheet() {
+            try {
+                let response = await fetch(SCRIPT_URL);
+                let data = await response.json();
+                
+                if (data && data.length > 0) {
+                    dictionary = defaultDictionaryData.concat(data); // Gộp dữ liệu mẫu và dữ liệu online
+                } else {
+                    dictionary = defaultDictionaryData;
+                }
+                renderApp();
+            } catch (error) {
+                console.error("Lỗi tải dữ liệu:", error);
+                dictionary = defaultDictionaryData; // Dùng tạm nếu lỗi
+                renderApp();
+            }
+        }
+
+        function renderApp() {
+            renderCard(0);
+            renderTop50();
+            document.getElementById('resultCount').innerText = `Đang hiển thị ${dictionary.length} từ trong kho dữ liệu (Online)`;
+        }
+
+        // --- 3. GỬI DỮ LIỆU LÊN GOOGLE SHEETS (Hàm MỚI) ---
+        function xuLyGuiForm(e) {
+            e.preventDefault();
+            
+            var btn = document.querySelector('.submit-btn');
+            var originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi lên Server...';
+            btn.disabled = true;
+            btn.style.backgroundColor = "#999";
+
+            var hoTen = document.getElementById('inpHoTen').value;
+            var lop = document.getElementById('inpLop').value;
+            var tuLong = document.getElementById('inpTuLong').value;
+            var tiengViet = document.getElementById('inpTiengViet').value;
+            var tiengCor = document.getElementById('inpTiengCor').value || "[Chưa rõ]";
+            var giaiThich = document.getElementById('inpGiaiThich').value || "Mới đóng góp";
+
+            // Tạo URL để gửi dữ liệu
+            var url = SCRIPT_URL + "?hoten=" + encodeURIComponent(hoTen) 
+                                 + "&lop=" + encodeURIComponent(lop)
+                                 + "&tulong=" + encodeURIComponent(tuLong)
+                                 + "&tiengviet=" + encodeURIComponent(tiengViet)
+                                 + "&giaithich=" + encodeURIComponent(giaiThich)
+                                 + "&tiengcor=" + encodeURIComponent(tiengCor);
+
+            // Gửi request POST
+            fetch(url, { method: "POST", mode: "no-cors" })
+            .then(() => {
+                alert("✅ Đã gửi thành công! Dữ liệu đã được lưu vào Google Sheets. Hãy tải lại trang để thấy từ mới.");
+                document.getElementById('formDongGop').reset();
+                // Thêm tạm vào giao diện để thấy ngay
+                dictionary.push({
+                    slang: tuLong, standard: tiengViet, context: giaiThich, cor: tiengCor, contributor: hoTen, classInfo: lop
+                });
+                renderApp();
+            })
+            .catch(error => {
+                alert("Lỗi: " + error);
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.style.backgroundColor = "var(--primary-color)";
+            });
+        }
+
+        // --- 4. CÁC HÀM HIỂN THỊ (Logic Cũ) ---
+        function generateTop50() {
+            let userStats = {};
+            
+            // Tính điểm từ danh sách dictionary (Online)
+            dictionary.forEach(item => {
+                if(item.contributor) {
+                    let key = item.contributor + "|" + (item.classInfo || "");
+                    if(!userStats[key]) {
+                        userStats[key] = { 
+                            name: item.contributor, 
+                            classInfo: item.classInfo || "", 
+                            score: 0 
+                        };
+                    }
+                    userStats[key].score++;
+                }
+            });
+
+            let data = Object.values(userStats);
+            
+            // Thêm Leader cứng (nếu chưa có trong list online)
+            const leaders = [
+                {name: "Lê Võ Cẩm Tú", classInfo: "12C1", score: 85, title: "👑 Leader"},
+                {name: "Bùi Thị Hồng Thắm", classInfo: "12C1", score: 80, title: "👑 Leader"}
+            ];
+            
+            let finalData = leaders.concat(data);
+            // Sắp xếp giảm dần
+            finalData.sort((a,b) => b.score - a.score);
+            return finalData.slice(0, 50);
+        }
+
+        function renderTop50() {
+            const list = generateTop50();
+            let html = "";
+            list.forEach((item, index) => {
+                let rankClass = "";
+                if(index === 0) rankClass = "rank-1"; else if(index === 1) rankClass = "rank-2"; else if(index === 2) rankClass = "rank-3";
+                
+                let title = item.title || "<span class='badge badge-new'>Thành viên</span>";
+                let lop = item.classInfo ? `<small>(${item.classInfo})</small>` : "";
+
+                html += `<tr>
+                    <td><span class="rank-num ${rankClass}">${index + 1}</span></td>
+                    <td><strong>${item.name}</strong> ${lop} ${title}</td>
+                    <td style="text-align: right; color: var(--primary-color); font-weight: bold;">${item.score} từ</td>
+                </tr>`;
+            });
+            let table = document.getElementById('top50Table');
+            if(table) table.innerHTML = html;
+        }
+
+        function flipAll(element) { element.classList.toggle('active'); }
+        
+        function renderCard(index) {
+            if (dictionary.length === 0) return;
+            if (index < 0 || index >= dictionary.length) index = 0;
+            const item = dictionary[index];
+            document.getElementById('displaySlang').innerText = `"${item.slang}"`;
+            document.getElementById('displayMeaning').innerText = item.standard;
+            document.getElementById('displayStandard').innerText = `"${item.standard}"`;
+            document.getElementById('displayContext').innerText = `Ngữ cảnh: ${item.context}`;
+            document.getElementById('displayCor').innerText = item.cor;
+            let wrapper = document.querySelector('.flip-container-wrapper');
+            if(wrapper) wrapper.classList.remove('active');
+        }
+
+        function nextWord() {
+            if (dictionary.length === 0) return;
+            let idx = Math.floor(Math.random() * dictionary.length);
+            renderCard(idx);
+        }
+
+        function searchWord() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let idx = dictionary.findIndex(item => item.slang.toLowerCase().includes(input));
+            if (idx !== -1) { 
+                renderCard(idx); 
+                document.getElementById('resultCount').innerText = `Đã tìm thấy: "${dictionary[idx].slang}"`;
+            } else {
+                document.getElementById('resultCount').innerText = "Không tìm thấy từ này trong dữ liệu Online.";
+            }
+        }
+        
+        function vote(btn) {
+            btn.innerHTML = "<i class='fas fa-check'></i> Đã chọn";
+            btn.disabled = true;
+            btn.style.background = "#ccc";
+        }
+
+        // --- KHỞI CHẠY ---
+        window.onload = function() {
+            loadDataFromSheet(); // Tải dữ liệu online khi mở web
+        };
+    </script>
+</body>
+</html>
