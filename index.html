@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> 
     
     <style>
-        /* --- CẤU HÌNH MÀU SẮC --- */
+        /* --- CẤU HÌNH MÀU SẮC (THEME) --- */
         :root {
             --primary-color: #43a047; 
             --light-green: #76d275;
@@ -113,11 +113,42 @@
         .chart-section { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 8px 20px var(--shadow-color); margin-bottom: 50px; text-align: center; }
         .chart-container { position: relative; height: 300px; width: 100%; max-width: 600px; margin: 0 auto; }
 
-        /* ACKNOWLEDGMENT */
-        .acknowledgment-box { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 30px; max-width: 900px; margin: 0 auto 30px; text-align: left; backdrop-filter: blur(5px); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); }
-        .acknowledgment-title { color: #ffeb3b; font-size: 1.5rem; text-transform: uppercase; font-weight: bold; text-align: center; margin-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 10px; }
-        .acknowledgment-content p { margin-bottom: 15px; font-size: 1.1rem; line-height: 1.8; color: #fff; }
-        .teacher-name { font-weight: bold; color: #ffeb3b; font-size: 1.2rem; }
+        /* ACKNOWLEDGMENT (LỜI TRI ÂN - SỬA LẠI ĐẸP HƠN) */
+        .acknowledgment-box { 
+            background: rgba(255, 255, 255, 0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            border-radius: 20px; 
+            padding: 30px; 
+            max-width: 900px; 
+            margin: 0 auto 30px; 
+            text-align: left; 
+            backdrop-filter: blur(10px); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); 
+            color: #fff;
+        }
+        .acknowledgment-title { 
+            color: #ffeb3b; 
+            font-size: 1.8rem; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            text-align: center; 
+            margin-bottom: 25px; 
+            border-bottom: 2px solid rgba(255,255,255,0.3); 
+            padding-bottom: 15px; 
+            font-family: 'Playfair Display', serif;
+        }
+        .acknowledgment-content p { 
+            margin-bottom: 15px; 
+            font-size: 1.15rem; 
+            line-height: 1.8; 
+            color: #fff; 
+        }
+        .teacher-name { 
+            font-weight: bold; 
+            color: #ffeb3b; 
+            font-size: 1.3rem; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
         .hero .intro-text { font-size: 1.1rem; max-width: 800px; margin: 0 auto; opacity: 0.95; line-height: 1.8; }
 
         /* SECTIONS */
@@ -210,7 +241,6 @@
         .flip-card-front { background-color: var(--card-bg); color: var(--primary-color); border: 3px solid var(--primary-color); }
         .flip-card-back { background-color: var(--card-bg); color: var(--primary-color); border: 3px solid var(--light-green); transform: rotateY(180deg); position: relative; overflow: hidden; }
         
-        /* Cập nhật lớp phủ tiếng Cor để chữ dễ đọc hơn */
         .cor-bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://vanhoavaphattrien.vn/uploads/images/2021/10/25/11/44/tc-1.jpg'); background-size: cover; background-position: center; opacity: 0.15; z-index: -1; pointer-events: none; backdrop-filter: blur(5px); }
         
         .btn-tts { background: none; border: none; color: var(--primary-color); font-size: 1.2rem; cursor: pointer; margin-left: 10px; transition: transform 0.2s; }
@@ -308,6 +338,7 @@
             line-height: 1.4;
             position: relative;
             animation: popIn 0.3s ease-out;
+            color: #000;
         }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
@@ -336,6 +367,7 @@
             justify-content: space-between;
             align-items: center;
             font-size: 0.9rem;
+            color: #333;
         }
         .btn-start-chat {
             position: absolute;
@@ -459,21 +491,29 @@
             <p class="project-info">Dự án của Lê Võ Cẩm Tú & Bùi Thị Hồng Thắm - Lớp 12C1</p>
             
             <div class="acknowledgment-box">
-                <h3 class="acknowledgment-title"><i class="fas fa-award"></i> Lời Tri Ân</h3>
+                <h3 class="acknowledgment-title"><i class="fas fa-heart"></i> Lời Tri Ân Sâu Sắc</h3>
                 <div class="acknowledgment-content">
                     <p>
+                        Chúng em xin gửi lời cảm ơn chân thành và sâu sắc nhất đến:
+                    </p>
+                    <p style="text-align: center;">
                         <i class="fas fa-chalkboard-teacher" style="color:#ffeb3b; margin-right:5px;"></i> 
                         Giáo viên hướng dẫn: <span class="teacher-name">Cô Võ Thị Sự</span> (Môn Ngữ văn).
                     </p>
-                    <p style="font-style: italic;">
-                        "Nhóm chúng em xin bày tỏ lòng biết ơn sâu sắc đến cô Võ Thị Sự – người đã tận tình chỉ dẫn..."
+                    <p style="font-style: italic; text-align: justify; font-size: 1rem; opacity: 0.9;">
+                        "Cảm ơn cô đã luôn tận tình chỉ dẫn, truyền lửa đam mê và đồng hành cùng nhóm chúng em trong suốt quá trình thực hiện dự án này. Sự tâm huyết của cô là động lực lớn nhất để chúng em hoàn thiện sản phẩm."
                     </p>
                     <hr style="border:0; border-top:1px dashed rgba(255,255,255,0.3); margin: 15px 0;">
-                    <p style="font-style: italic;">
-                        "Đồng thời, chúng em xin chân thành cảm ơn <span class="teacher-name">Thầy Nguyễn Văn Thanh</span> đã nhiệt tình hỗ trợ trong việc dịch thuật tiếng Cor."
+                    <p style="text-align: center;">
+                        Đồng thời, chúng em xin trân trọng cảm ơn: <br>
+                        <span class="teacher-name">Thầy Nguyễn Văn Thanh</span>
+                    </p>
+                    <p style="font-style: italic; text-align: center; font-size: 1rem; opacity: 0.9;">
+                        (Người đã nhiệt tình hỗ trợ và cố vấn chuyên môn trong việc dịch thuật tiếng Cor).
                     </p>
                 </div>
             </div>
+
             <div class="intro-text">
                 <p>Chào mừng bạn đến với không gian tôn vinh vẻ đẹp của Tiếng Việt! Nơi đây, chúng mình cùng nhau nhận diện và điều chỉnh thói quen sử dụng ngôn ngữ.</p>
             </div>
@@ -880,15 +920,15 @@
 
                 // B. CẬP NHẬT SỐ LIỆU THỐNG KÊ
                 if (data.stats) {
-                     // Nếu API trả về dạng mảng
-                     if(Array.isArray(data.stats)) {
-                         let viewStat = data.stats.find(s => s.Name === 'PageViews');
-                         if(viewStat) animateValue("counter1", 0, viewStat.Value, 2000);
-                     } 
-                     // Nếu API trả về object
-                     else if (data.stats.views) {
-                        animateValue("counter1", 0, data.stats.views, 2000);
-                     }
+                      // Nếu API trả về dạng mảng
+                      if(Array.isArray(data.stats)) {
+                          let viewStat = data.stats.find(s => s.Name === 'PageViews');
+                          if(viewStat) animateValue("counter1", 0, viewStat.Value, 2000);
+                      } 
+                      // Nếu API trả về object
+                      else if (data.stats.views) {
+                         animateValue("counter1", 0, data.stats.views, 2000);
+                      }
                 }
 
                 // C. CẬP NHẬT BÌNH CHỌN
@@ -911,7 +951,6 @@
                 }
                 
                 // D. CẬP NHẬT TOP 50 - SỬA LỖI Ở ĐÂY
-                // Luôn luôn tự tính toán từ dictionary để đảm bảo chính xác
                 renderTop50(); 
 
                 renderApp(); // Hiển thị giao diện chính
@@ -935,6 +974,7 @@
                 renderCard(0);
                 renderListView(); 
                 renderHotSlangTable();
+                renderTop50(); // Render lại khi có dữ liệu
             }
             animateValue("counter3", 0, dictionary.length, 1000);
         }
@@ -991,6 +1031,8 @@
         // Hiển thị Top 50 (ĐÃ SỬA: Tự động tính toán từ dictionary)
         function renderTop50(realData = null) {
             const tbody = document.getElementById('top50Table');
+            if (!tbody) return; // Bảo vệ nếu chưa load DOM
+
             let html = "";
             let dataToRender = [];
 
@@ -1452,9 +1494,13 @@
             }
         }
 
-        // --- GAME CẢNH SÁT CHÍNH TẢ (Logic Sơ khai) ---
+        // --- GAME CẢNH SÁT CHÍNH TẢ (ĐÃ SỬA: Logic Sơ khai) ---
+        let spellingTimer = null;
         function startSpellingGame() {
             if(dictionary.length === 0) return;
+            // Clear timer cũ nếu có
+            if(spellingTimer) clearTimeout(spellingTimer);
+
             // Chọn ngẫu nhiên 1 từ lóng
             let rand = dictionary[Math.floor(Math.random() * dictionary.length)];
             const chatBody = document.getElementById('spellingGameBody');
@@ -1468,6 +1514,9 @@
             msgDiv.className = 'chat-bubble chat-left';
             msgDiv.innerHTML = `Ê bà, hôm nay nhìn bà <span class='spelling-word' onclick='fixSpelling(this, "${rand.standard}")' style='color:red; font-weight:bold; text-decoration:underline'>${rand.slang}</span> quá à!`;
             chatBody.appendChild(msgDiv);
+            
+            // Tự động scroll xuống cuối
+            chatBody.scrollTop = chatBody.scrollHeight;
         }
 
         function fixSpelling(span, correctWord) {
@@ -1484,10 +1533,13 @@
             const reply = document.createElement('div');
             reply.className = 'chat-bubble chat-right';
             reply.innerText = "Hehe, cảm ơn đã sửa giúp tui nha!";
-            setTimeout(() => { chatBody.appendChild(reply); }, 800);
+            setTimeout(() => { 
+                chatBody.appendChild(reply); 
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 800);
             
             // Tiếp tục
-            setTimeout(() => startSpellingGame(), 2000);
+            spellingTimer = setTimeout(() => startSpellingGame(), 2000);
         }
 
         // --- GAME TIẾNG COR ---
