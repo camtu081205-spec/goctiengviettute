@@ -113,7 +113,7 @@
         .chart-section { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 8px 20px var(--shadow-color); margin-bottom: 50px; text-align: center; }
         .chart-container { position: relative; height: 300px; width: 100%; max-width: 600px; margin: 0 auto; }
 
-        /* ACKNOWLEDGMENT (LỜI TRI ÂN - ĐÃ SỬA LẠI ĐẸP HƠN) */
+        /* ACKNOWLEDGMENT (LỜI TRI ÂN) */
         .acknowledgment-box { 
             background: rgba(255, 255, 255, 0.15); 
             border: 1px solid rgba(255, 255, 255, 0.3); 
@@ -882,7 +882,7 @@
         const bannedWords = ["dm", "đm", "vcl", "vl", "cc", "đụ", "lồn", "buồi", "ngu", "chó", "sex"];
         let usageChartInstance = null;
 
-        // --- 1. HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEET ---
+        // --- 1. HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEET (ĐÃ SỬA KEY MAPPING) ---
         async function loadDataFromSheet() {
             const preloader = document.getElementById('preloader');
             try {
@@ -900,15 +900,16 @@
 
                 // A. CẬP NHẬT TỪ ĐIỂN
                 if (data.dictionary && Array.isArray(data.dictionary)) {
-                    // MAP DỮ LIỆU TỪ SHEET (CỘT VIỆT) SANG BIẾN JS
+                    // *** QUAN TRỌNG: Map đúng tên cột trong Google Sheet của bạn ***
                     dictionary = data.dictionary.map(item => ({
-                        slang: item.TuLong || item.slang || "", 
-                        standard: item.TiengViet || item.standard || "",
-                        context: item.GiaiThich || item.context || "",
-                        origin: "Đóng góp bởi " + (item.HoTen || item.hoten || "Ẩn danh"),
-                        cor: item.TiengCo || item.cor || "[Chưa rõ]",
-                        // QUAN TRỌNG: Lấy đúng cột HoTen để xếp hạng
-                        contributor: item.HoTen || item.hoten || item.Hoten || "Ẩn danh",
+                        slang: item.TuLong || item.tulong || "", 
+                        standard: item.TiengViet || item.tiengviet || "",
+                        context: item.GiaiThich || item.giaithich || "",
+                        // Sửa lại map tên cột TiengCo (không có r)
+                        cor: item.TiengCo || item.tiengco || "[Chưa rõ]",
+                        // Sửa lại map tên cột HoTen (viết hoa H, T)
+                        contributor: item.HoTen || item.hoten || "Ẩn danh",
+                        origin: "Đóng góp bởi " + (item.HoTen || "Ẩn danh"),
                         classInfo: item.Lop || ""
                     }));
 
@@ -918,22 +919,17 @@
                     dictionary = defaultDictionaryData;
                 }
 
-                // B. CẬP NHẬT SỐ LIỆU THỐNG KÊ
+                // B. CẬP NHẬT SỐ LIỆU THỐNG KÊ (SHEET STATS)
                 if (data.stats) {
-                      // Nếu API trả về dạng mảng
                       if(Array.isArray(data.stats)) {
                           let viewStat = data.stats.find(s => s.Name === 'PageViews');
                           if(viewStat) animateValue("counter1", 0, viewStat.Value, 2000);
                       } 
-                      // Nếu API trả về object
-                      else if (data.stats.views) {
-                         animateValue("counter1", 0, data.stats.views, 2000);
-                      }
                 }
 
-                // C. CẬP NHẬT BÌNH CHỌN
+                // C. CẬP NHẬT BÌNH CHỌN (SHEET POLLS)
                 if (data.polls && Array.isArray(data.polls)) {
-                    // Map polls data
+                    // *** QUAN TRỌNG: Map đúng tên cột VoteA, VoteB ***
                     globalPolls = data.polls.map(p => ({
                         id: p.ID,
                         slang: p.TuLong,
@@ -944,16 +940,16 @@
                     })).filter(p => p.active === true);
 
                     renderVotingSection(globalPolls);
-                    updateChartReal(globalPolls);
+                    updateChartReal(globalPolls); // Vẽ lại biểu đồ
                     
                     let totalVotes = globalPolls.reduce((acc, curr) => acc + curr.voteA + curr.voteB, 0);
                     animateValue("counter2", 0, totalVotes, 2000);
                 }
                 
-                // D. CẬP NHẬT TOP 50 - SỬA LỖI Ở ĐÂY
+                // D. CẬP NHẬT TOP 50 (Render lại bảng xếp hạng)
                 renderTop50(); 
 
-                renderApp(); // Hiển thị giao diện chính
+                renderApp(); 
 
             } catch (error) {
                 console.error("Lỗi tải dữ liệu:", error);
@@ -974,7 +970,7 @@
                 renderCard(0);
                 renderListView(); 
                 renderHotSlangTable();
-                renderTop50(); // Render lại khi có dữ liệu
+                renderTop50(); 
             }
             animateValue("counter3", 0, dictionary.length, 1000);
         }
@@ -984,10 +980,8 @@
             if (dictionary.length === 0) return;
             const item = dictionary[index];
             
-            // Reset trạng thái lật thẻ
             document.querySelectorAll('.flip-card').forEach(card => card.classList.remove('flipped'));
 
-            // Gán dữ liệu
             document.getElementById('displaySlang').innerText = `"${item.slang}"`;
             document.getElementById('displayMeaning').innerText = item.standard;
             document.getElementById('displayOrigin').innerHTML = `<i class="fas fa-history"></i> ${item.origin || 'Chưa rõ nguồn gốc'}`;
@@ -995,22 +989,19 @@
             document.getElementById('displayStandard').innerText = item.standard;
             document.getElementById('displayContext').innerText = item.context || "Chưa có ngữ cảnh cụ thể";
             
-            // Xử lý Tiếng Cor
             const corText = item.cor && item.cor !== "" ? item.cor : "[Đang cập nhật]";
             document.getElementById('displayCor').innerText = corText;
         }
 
-        // Chuyển từ tiếp theo
         function nextWord() {
             if (dictionary.length === 0) return;
             currentCardIndex++;
             if (currentCardIndex >= dictionary.length) {
-                currentCardIndex = 0; // Quay lại đầu
+                currentCardIndex = 0; 
             }
             renderCard(currentCardIndex);
         }
 
-        // Hiển thị danh sách List View
         function renderListView() {
             const tableBody = document.getElementById('fullDictionaryTable');
             let html = "";
@@ -1028,35 +1019,27 @@
             tableBody.innerHTML = html;
         }
 
-        // Hiển thị Top 50 (ĐÃ SỬA: Tự động tính toán từ dictionary)
-        function renderTop50(realData = null) {
+        function renderTop50() {
             const tbody = document.getElementById('top50Table');
-            if (!tbody) return; // Bảo vệ nếu chưa load DOM
+            if (!tbody) return; 
 
-            let html = "";
-            let dataToRender = [];
-
-            // Tự động gom nhóm tên người đóng góp
             let counts = {};
             dictionary.forEach(item => {
-                // Chuẩn hóa tên: bỏ khoảng trắng thừa
+                // Lấy tên từ biến đã map 'contributor' (HoTen)
                 let name = item.contributor ? item.contributor.trim() : "";
-                
-                // Chỉ đếm nếu có tên và không phải là Admin/Ẩn danh
                 if (name && name.toLowerCase() !== 'admin' && name.toLowerCase() !== 'ẩn danh') {
                     counts[name] = (counts[name] || 0) + 1;
                 }
             });
 
-            // Chuyển object counts thành mảng để sắp xếp
-            dataToRender = Object.keys(counts).map(key => ({
+            let dataToRender = Object.keys(counts).map(key => ({
                 name: key,
                 count: counts[key]
             }));
 
-            // Sắp xếp giảm dần theo số lượng đóng góp
             dataToRender.sort((a, b) => b.count - a.count);
 
+            let html = "";
             if(dataToRender.length === 0) {
                  html = `<tr><td colspan="3" style="text-align:center; padding:20px;">Chưa có dữ liệu đóng góp. Hãy là người đầu tiên!</td></tr>`;
             } else {
@@ -1078,7 +1061,6 @@
             tbody.innerHTML = html;
         }
 
-        // Tìm kiếm
         function searchWord() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = dictionary.filter(item => 
@@ -1086,7 +1068,6 @@
                 item.standard.toLowerCase().includes(query)
             );
             
-            // Cập nhật List View
             const tableBody = document.getElementById('fullDictionaryTable');
             if(filtered.length === 0) {
                 tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center">Không tìm thấy từ nào. <a href="#donggop" style="color:blue">Đóng góp ngay?</a></td></tr>`;
@@ -1104,9 +1085,7 @@
                 tableBody.innerHTML = html;
             }
 
-            // Nếu đang ở Card View, tìm thẻ đầu tiên khớp
             if (filtered.length > 0) {
-                // Tìm index của phần tử đầu tiên trong mảng gốc
                 const firstMatch = dictionary.findIndex(d => d.slang === filtered[0].slang);
                 if (firstMatch !== -1) {
                     currentCardIndex = firstMatch;
@@ -1115,11 +1094,7 @@
             }
         }
 
-        // --- CÁC HÀM XỬ LÝ SỰ KIỆN (UI) ---
-        
-        function flipOne(card) {
-            card.classList.toggle('flipped');
-        }
+        function flipOne(card) { card.classList.toggle('flipped'); }
 
         function toggleViewMode(mode) {
             const btns = document.querySelectorAll('.btn-view-mode');
@@ -1188,7 +1163,7 @@
 
             const params = new URLSearchParams();
             params.append('action', 'vote');
-            params.append('id', pollId); // Sửa rowIndex thành id
+            params.append('id', pollId); 
             params.append('type', type);
 
             fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: params })
@@ -1211,7 +1186,8 @@
             
             polls.forEach(p => {
                 labels.push(p.standard);
-                dataValues.push(p.voteB); 
+                // Đảm bảo VoteB là số
+                dataValues.push(parseInt(p.voteB) || 0); 
             });
 
             if(usageChartInstance) usageChartInstance.destroy();
@@ -1255,13 +1231,11 @@
         function renderHotSlangTable() {
             let tableBody = document.getElementById('hotSlangTable');
             let html = "";
-            // Sử dụng dữ liệu thật từ dictionary (nếu có)
             let limit = Math.min(dictionary.length, 20); 
             
             for (let i = 0; i < limit; i++) {
                 let rank = i + 1;
                 let word = dictionary[i].slang + " (" + dictionary[i].standard + ")";
-                // Giả lập view count dựa trên vị trí (để demo đẹp)
                 let viewCount = Math.floor(2500 - (i * 120)) + Math.floor(Math.random()*50);
                 if (viewCount < 50) viewCount = 50;
 
@@ -1272,7 +1246,6 @@
                 else rankClass = "rank-num";
                 html += `<tr><td><span class="rank-num ${rankClass}">${rank}</span></td><td>${word}</td><td style="text-align: right;">${viewCount.toLocaleString()}</td></tr>`;
             }
-            // Nếu dữ liệu ít quá, thêm dòng trống
             if (limit === 0) {
                  html = `<tr><td colspan="3">Chưa có dữ liệu hot trend.</td></tr>`;
             }
@@ -1280,7 +1253,6 @@
             tableBody.innerHTML = html;
         }
 
-        // --- SCROLL TO TOP ---
         window.onscroll = function() {
             const btn = document.getElementById("scrollTopBtn");
             if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
@@ -1293,7 +1265,6 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        // --- CHATBOT AI ---
         function toggleChat() {
             const chatWin = document.getElementById('chatWindow');
             chatWin.style.display = chatWin.style.display === 'flex' ? 'none' : 'flex';
@@ -1425,7 +1396,6 @@
             const lop = document.getElementById('inpLop').value;
             const tiengCor = document.getElementById('inpTiengCor').value || "[Chưa rõ]";
             
-            // Gửi dữ liệu qua API
             const params = new URLSearchParams();
             params.append('hoten', hoTen);
             params.append('lop', lop);
@@ -1434,12 +1404,10 @@
             params.append('giaithich', giaiThich);
             params.append('tiengcor', tiengCor);
 
-            // Dùng no-cors để gửi dữ liệu form
             fetch(SCRIPT_URL, { method: "POST", mode: 'no-cors', body: params })
             .then(() => {
                 alert("✅ Đã gửi thành công!");
                 document.getElementById('formDongGop').reset();
-                // Tự thêm vào mảng local để hiển thị ngay lập tức
                 dictionary.push({ slang: tuLong, standard: tiengViet, context: giaiThich, origin: "Mới đóng góp", cor: tiengCor, contributor: hoTen, classInfo: lop });
                 renderApp();
             })
@@ -1447,16 +1415,13 @@
             .finally(() => { btn.innerHTML = originalText; btn.disabled = false; btn.style.backgroundColor = "var(--primary-color)"; });
         }
         
-        // --- XỬ LÝ CONFESSION (GIẢ LẬP LOCAL VÌ GOOGLE FORM PHỨC TẠP HƠN) ---
         function submitConfession() {
             const content = document.getElementById('cfsContent').value;
             if(!content) { alert("Bạn chưa viết gì cả!"); return; }
-             // Ở đây giả lập gửi thành công
             alert("Đã gửi Confession! Chờ Admin duyệt nhé.");
             document.getElementById('cfsContent').value = "";
         }
 
-        // --- GAME LOGIC ---
         let currentGameWord = {}; let score = 0;
         function startGame() {
             if(dictionary.length < 4) { alert("Cần ít nhất 4 từ!"); return; }
@@ -1494,41 +1459,33 @@
             }
         }
 
-        // --- GAME CẢNH SÁT CHÍNH TẢ (ĐÃ SỬA: Logic Sơ khai) ---
         let spellingTimer = null;
         function startSpellingGame() {
             if(dictionary.length === 0) return;
-            // Clear timer cũ nếu có
             if(spellingTimer) clearTimeout(spellingTimer);
 
-            // Chọn ngẫu nhiên 1 từ lóng
             let rand = dictionary[Math.floor(Math.random() * dictionary.length)];
             const chatBody = document.getElementById('spellingGameBody');
             
-            // Xóa nút bắt đầu
             const startBtn = document.querySelector('.btn-start-chat');
             if(startBtn) startBtn.style.display = 'none';
 
-            // Tạo tin nhắn mới
             const msgDiv = document.createElement('div');
             msgDiv.className = 'chat-bubble chat-left';
             msgDiv.innerHTML = `Ê bà, hôm nay nhìn bà <span class='spelling-word' onclick='fixSpelling(this, "${rand.standard}")' style='color:red; font-weight:bold; text-decoration:underline'>${rand.slang}</span> quá à!`;
             chatBody.appendChild(msgDiv);
             
-            // Tự động scroll xuống cuối
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
         function fixSpelling(span, correctWord) {
-            span.onclick = null; // Disable click
+            span.onclick = null; 
             span.style.textDecoration = 'none';
             span.innerHTML = `<span style='color:green'>${correctWord}</span>`;
             
-            // Cộng điểm
             let currentScore = parseInt(document.getElementById('spellingScore').innerText);
             document.getElementById('spellingScore').innerText = currentScore + 10;
             
-            // Reply tự động
             const chatBody = document.getElementById('spellingGameBody');
             const reply = document.createElement('div');
             reply.className = 'chat-bubble chat-right';
@@ -1538,11 +1495,9 @@
                 chatBody.scrollTop = chatBody.scrollHeight;
             }, 800);
             
-            // Tiếp tục
             spellingTimer = setTimeout(() => startSpellingGame(), 2000);
         }
 
-        // --- GAME TIẾNG COR ---
         const corVocab = [ {cor: "A-mí", viet: "Mẹ"}, {cor: "A-ma", viet: "Cha"}, {cor: "Ka-lăng", viet: "Đại bàng"}, {cor: "Xa-nía", viet: "Cái váy"}, {cor: "Pơ-lê", viet: "Làng"}, {cor: "Do-ri", viet: "Con gà"} ];
         let hasFlippedCard = false, lockBoard = false, firstCard, secondCard;
         function initCorGame() {
