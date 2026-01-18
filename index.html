@@ -355,10 +355,6 @@
             align-self: flex-end;
         }
         
-        /* Hiệu ứng rung lắc khi chọn sai */
-        .shake-element { animation: shake 0.5s; background: #ffebee; color: red !important; border: 1px solid red; }
-        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
-
         .phone-footer {
             padding: 15px;
             background: #fff;
@@ -395,31 +391,6 @@
             background-color: #e3f2fd;
         }
         
-        .spelling-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-            justify-content: center;
-            animation: popIn 0.3s ease-out;
-        }
-        
-        .option-btn {
-            background: #fff;
-            border: 1px solid #ccc;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #333;
-            transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .option-btn:hover {
-            background: #f0f2f5;
-            transform: translateY(-2px);
-        }
-
         @media (max-width: 768px) {
             .hero h2 { font-size: 2.5rem; }
             .weekly-update, .flip-container-wrapper, .form-row, .ranking-section, .voting-grid, .confession-container, .stats-dashboard { flex-direction: column; grid-template-columns: 1fr; }
@@ -850,7 +821,7 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 Dự án Góc Tiếng Việt Tử Tế - Trường THPT Trà Bồng</p>
+        <p>&copy; 2026 Dự án Góc Tiếng Việt Tử Tế - Trường THPT Trà Bồng</p>
     </footer>
 
     <div class="share-btn-float" onclick="openQR()"><i class="fas fa-qrcode"></i></div>
@@ -864,7 +835,7 @@
     </div>
 
     <script>
-        // --- CẤU HÌNH LIÊN KẾT (CẬP NHẬT MỚI NHẤT) ---
+        // --- CẤU HÌNH LIÊN KẾT (GIỮ NGUYÊN LINK GOOGLE SCRIPT CỦA BẠN) ---
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznWVCFTjtdeHpgqE9aMyzn2qhRtMtpe0N8WXFlVclRJF2j6ii75DJ_s_7M9mKw8IRMvA/exec"; 
         
         // Dữ liệu dự phòng (Chạy khi lỗi mạng)
@@ -885,6 +856,14 @@
         // --- HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEET (Mapping chuẩn xác từ ảnh) ---
         async function loadDataFromSheet() {
             const preloader = document.getElementById('preloader');
+            // Timeout an toàn: Nếu 3 giây không tải xong thì tắt preloader để vào web
+            setTimeout(() => {
+                if(preloader && preloader.style.display !== 'none') {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => { preloader.style.display = 'none'; }, 500);
+                }
+            }, 3000);
+
             try {
                 // Đếm view
                 fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({ action: 'view' }) }).catch(e => {});
@@ -894,14 +873,16 @@
                 if (!response.ok) throw new Error("Network response was not ok");
                 let data = await response.json();
 
-                // 1. Xử lý Dictionary (Mapping với cột trong ảnh 1: HoTen, TiengCo, etc.)
-                if (data.dictionary && Array.isArray(data.dictionary)) {
+                // 1. Xử lý Dictionary (Mapping với cột trong ảnh bạn gửi: HoTen, TiengCo, etc.)
+                // SỬA QUAN TRỌNG: Thêm check mảng để tránh lỗi
+                if (data && data.dictionary && Array.isArray(data.dictionary)) {
                     dictionary = data.dictionary.map(item => ({
+                        // Ưu tiên key viết hoa (như trong Excel) hoặc viết thường
                         slang: item.TuLong || item.tuLong || "", 
                         standard: item.TiengViet || item.tiengViet || "",
                         context: item.GiaiThich || item.giaiThich || "",
-                        cor: item.TiengCo || item.tiengCo || "[Chưa rõ]", // Ảnh 1 cột G là TiengCo
-                        contributor: item.HoTen || item.hoTen || "Ẩn danh", // Ảnh 1 cột B là HoTen
+                        cor: item.TiengCo || item.tiengCo || "[Chưa rõ]", 
+                        contributor: item.HoTen || item.hoTen || "Ẩn danh", 
                         origin: "Đóng góp bởi " + (item.HoTen || "Admin"),
                         classInfo: item.Lop || ""
                     }));
@@ -1016,7 +997,8 @@
             const tbody = document.getElementById('top50Table');
             let counts = {};
             dictionary.forEach(item => {
-                let name = item.contributor ? item.contributor.trim() : "Ẩn danh";
+                // Kiểm tra null trước khi trim()
+                let name = item.contributor ? item.contributor.toString().trim() : "Ẩn danh";
                 if (name.toLowerCase() !== 'admin' && name.toLowerCase() !== 'ẩn danh') {
                     counts[name] = (counts[name] || 0) + 1;
                 }
@@ -1167,7 +1149,12 @@
         }
 
         function updateChartReal(polls) {
-            const ctx = document.getElementById('usageChart').getContext('2d');
+            const ctx = document.getElementById('usageChart');
+            if(!ctx) return;
+            // Kiểm tra xem thư viện ChartJS đã load chưa
+            if(typeof Chart === 'undefined') return;
+
+            const context = ctx.getContext('2d');
             let labels = [];
             let dataValues = [];
             
@@ -1178,7 +1165,7 @@
 
             if(usageChartInstance) usageChartInstance.destroy();
 
-            usageChartInstance = new Chart(ctx, {
+            usageChartInstance = new Chart(context, {
                 type: 'doughnut',
                 data: {
                     labels: labels,
@@ -1519,13 +1506,6 @@
             try { AOS.init(); } catch(e) {}
             loadDataFromSheet(); 
             initCorGame(); 
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                if(preloader && preloader.style.display !== 'none') {
-                    preloader.style.opacity = '0';
-                    setTimeout(() => { preloader.style.display = 'none'; }, 500);
-                }
-            }, 3000); 
         };
     </script>
 </body>
