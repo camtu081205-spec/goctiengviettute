@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Góc Tiếng Việt Tử Tế | THPT Trà Bồng</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Great+Vibes&display=swap" rel="stylesheet"> 
@@ -47,6 +48,7 @@
             --game-bg: linear-gradient(135deg, #311b92 0%, #0d47a1 100%);
         }
 
+        /* --- RESET CSS CƠ BẢN --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
         body { background-color: var(--secondary-color); color: var(--text-color); line-height: 1.6; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
         a { text-decoration: none; color: inherit; }
@@ -57,7 +59,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loader-text { margin-top: 20px; font-weight: bold; color: var(--primary-color); animation: blink 1.5s infinite; }
 
-        /* SCROLL TO TOP BUTTON */
+        /* BUTTON SCROLL TOP */
         #scrollTopBtn { display: none; position: fixed; bottom: 100px; right: 30px; z-index: 99; font-size: 1.2rem; border: none; outline: none; background-color: var(--primary-color); color: white; cursor: pointer; padding: 15px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s; }
         #scrollTopBtn:hover { background-color: var(--light-green); transform: translateY(-3px); }
 
@@ -86,7 +88,7 @@
         nav ul { display: flex; gap: 20px; list-style: none; }
         nav a:hover { color: var(--accent-color); transition: color 0.3s; }
 
-        /* DARK MODE TOGGLE BTN */
+        /* DARK MODE TOGGLE */
         .theme-switch-wrapper { display: flex; align-items: center; margin-left: 20px; }
         .theme-switch { display: inline-block; height: 34px; position: relative; width: 60px; }
         .theme-switch input { display:none; }
@@ -113,7 +115,7 @@
         .chart-section { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 8px 20px var(--shadow-color); margin-bottom: 50px; text-align: center; }
         .chart-container { position: relative; height: 300px; width: 100%; max-width: 600px; margin: 0 auto; }
 
-        /* ACKNOWLEDGMENT (LỜI TRI ÂN) */
+        /* ACKNOWLEDGMENT */
         .acknowledgment-box { 
             background: rgba(255, 255, 255, 0.15); 
             border: 1px solid rgba(255, 255, 255, 0.3); 
@@ -217,7 +219,7 @@
         .certificate-section { background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 50px; border: 4px double var(--primary-color); }
         .cert-btn { background: linear-gradient(45deg, #FFD700, #FF8C00); color: #fff; padding: 15px 30px; border: none; border-radius: 30px; font-weight: bold; font-size: 1.2rem; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 10px rgba(255, 140, 0, 0.4); }
 
-        /* CARD/LIST VIEW */
+        /* VIEW MODE & SEARCH */
         .view-controls { text-align: center; margin-bottom: 20px; }
         .btn-view-mode { background: var(--card-bg); border: 2px solid var(--primary-color); color: var(--primary-color); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; margin: 0 5px; }
         .btn-view-mode.active { background: var(--primary-color); color: #fff; }
@@ -233,6 +235,7 @@
         .mic-btn.listening { background: #f44336; color: white; animation: pulse-red 1.5s infinite; }
         @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); } }
 
+        /* FLIP CARD */
         .flip-container-wrapper { display: flex; justify-content: center; gap: 20px; perspective: 1000px; cursor: pointer; margin-bottom: 40px; }
         .flip-card { background-color: transparent; width: 320px; height: 280px; perspective: 1000px; position: relative; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; box-shadow: 0 6px 12px var(--shadow-color); border-radius: 20px; }
@@ -259,6 +262,7 @@
         .btn-next { background-color: var(--primary-color); color: white; box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3); padding: 12px 35px; }
         .btn-next:hover { background-color: var(--light-green); transform: translateY(-2px); }
 
+        /* RANKING */
         .ranking-section { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 60px; }
         .ranking-box { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px var(--shadow-color); display: flex; flex-direction: column; max-height: 550px; }
         .ranking-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid var(--secondary-color); }
@@ -278,6 +282,7 @@
         .badge-apprentice { background: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; }
         .badge-new { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
 
+        /* FORM */
         .contribution-section { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 8px 20px var(--shadow-color); max-width: 900px; margin: 0 auto; }
         .form-row { display: flex; gap: 25px; margin-bottom: 20px; }
         .form-group { flex: 1; }
@@ -806,10 +811,6 @@
                         <label>Tiếng Việt chuẩn:</label>
                         <input type="text" id="inpTiengViet" placeholder="Ví dụ: Chảnh" required>
                     </div>
-                    <div class="form-group">
-                        <label>Tiếng Cor (Nếu biết):</label>
-                        <input type="text" id="inpTiengCor" placeholder="Nhập từ tiếng Cor...">
-                    </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 30px;">
                     <label>Giải thích thêm (Sự tích/Nguồn gốc):</label>
@@ -835,25 +836,17 @@
     </div>
 
     <script>
-        // --- CẤU HÌNH LIÊN KẾT (GIỮ NGUYÊN LINK GOOGLE SCRIPT CỦA BẠN) ---
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznWVCFTjtdeHpgqE9aMyzn2qhRtMtpe0N8WXFlVclRJF2j6ii75DJ_s_7M9mKw8IRMvA/exec"; 
+        // --- CẤU HÌNH LIÊN KẾT (CẬP NHẬT MỚI NHẤT) ---
+        // Link Web App Google Script của bạn
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2DFyGIwX7pENRi0NjwRYRTjthCMqM-8zy7IctA5wsGw1v021rvqPC-PBz_-kgPBxc/exec"; 
         
-        // Dữ liệu dự phòng (Chạy khi lỗi mạng)
-        const defaultDictionaryData = [
-            { slang: "Flex", standard: "Khoe khoang", context: "Khoe thành tích", origin: "Tiếng Anh: Flex muscle", cor: "Khue", contributor: "Nguyễn Yến Nhi", classInfo: "12C1" },
-            { slang: "Check VAR", standard: "Kiểm chứng", context: "Kiểm tra lại thông tin", origin: "Công nghệ VAR bóng đá", cor: "'Do hli", contributor: "Lê Võ Cẩm Tú", classInfo: "12C1" },
-            { slang: "Over hợp", standard: "Rất hợp", context: "Cực kỳ phù hợp", origin: "Over (quá) + Hợp", cor: "Hợp đhưng đhik", contributor: "Nguyễn Yến Nhi", classInfo: "12C1" },
-            { slang: "Kiwi kiwi", standard: "Ngon", context: "Khen món ăn", origin: "Cách nói lái từ 'Kiwii'", cor: "Lắp đhruih", contributor: "Bùi Hà Như", classInfo: "12C1" },
-            { slang: "Xịt keo", standard: "Cứng họng", context: "Bất ngờ không nói nên lời", origin: "Ngôn ngữ mạng", cor: "Khook hui", contributor: "Nguyễn Yến Nhi", classInfo: "12C1" }
-        ];
-
         let dictionary = []; 
         let globalPolls = []; 
         let currentCardIndex = 0; 
         const bannedWords = ["dm", "đm", "vcl", "vl", "cc", "đụ", "lồn", "buồi", "ngu", "chó", "sex"];
         let usageChartInstance = null;
 
-        // --- HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEET (Mapping chuẩn xác từ ảnh) ---
+        // --- HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEET (Mapping chuẩn xác) ---
         async function loadDataFromSheet() {
             const preloader = document.getElementById('preloader');
             // Timeout an toàn: Nếu 3 giây không tải xong thì tắt preloader để vào web
@@ -874,7 +867,6 @@
                 let data = await response.json();
 
                 // 1. Xử lý Dictionary (Mapping với cột trong ảnh bạn gửi: HoTen, TiengCo, etc.)
-                // SỬA QUAN TRỌNG: Thêm check mảng để tránh lỗi
                 if (data && data.dictionary && Array.isArray(data.dictionary)) {
                     dictionary = data.dictionary.map(item => ({
                         // Ưu tiên key viết hoa (như trong Excel) hoặc viết thường
@@ -886,9 +878,8 @@
                         origin: "Đóng góp bởi " + (item.HoTen || "Admin"),
                         classInfo: item.Lop || ""
                     }));
-                    if(dictionary.length === 0) dictionary = defaultDictionaryData;
                 } else {
-                    dictionary = defaultDictionaryData;
+                    dictionary = [];
                 }
 
                 // 2. Xử lý Stats (Mapping với cột trong ảnh 2: PageViews)
@@ -908,7 +899,7 @@
                         voteA: parseInt(p.VoteA) || 0, // Chuyển sang số
                         voteB: parseInt(p.VoteB) || 0, // Chuyển sang số
                         active: p.Active
-                    })).filter(p => p.active === true);
+                    })).filter(p => p.active === true || p.Active === "TRUE");
 
                     renderVotingSection(globalPolls);
                     updateChartReal(globalPolls);
@@ -922,13 +913,9 @@
                 renderApp(); 
 
             } catch (error) {
-                console.error("Lỗi tải dữ liệu, dùng data mẫu:", error);
-                // Fallback khi lỗi mạng
-                dictionary = defaultDictionaryData;
-                globalPolls = [{id: 1, slang: "Báo", standard: "Người gây rắc rối", voteA: 10, voteB: 90, active: true}];
-                renderVotingSection(globalPolls);
-                updateChartReal(globalPolls);
-                renderTop50();
+                console.error("Lỗi tải dữ liệu:", error);
+                // Dữ liệu mẫu nếu lỗi
+                dictionary = [{ slang: "Flex", standard: "Khoe khoang", context: "Demo lỗi", origin: "Admin", cor: "Khue" }];
                 renderApp();
             } finally {
                 if(preloader) {
@@ -992,12 +979,11 @@
             tableBody.innerHTML = html;
         }
 
-        // Xếp hạng Top 50 - Đã sửa logic lấy contributor
+        // Xếp hạng Top 50
         function renderTop50() {
             const tbody = document.getElementById('top50Table');
             let counts = {};
             dictionary.forEach(item => {
-                // Kiểm tra null trước khi trim()
                 let name = item.contributor ? item.contributor.toString().trim() : "Ẩn danh";
                 if (name.toLowerCase() !== 'admin' && name.toLowerCase() !== 'ẩn danh') {
                     counts[name] = (counts[name] || 0) + 1;
@@ -1141,7 +1127,6 @@
                 alert("Cảm ơn bạn đã bình chọn! Kết quả sẽ cập nhật sau khi tải lại trang.");
             })
             .catch(err => {
-                // Giả lập thành công nếu lỗi mạng để demo
                 localStorage.setItem('voted_' + pollId, 'true');
                 mainBtn.innerHTML = '<i class="fas fa-check"></i> Đã Ghi Nhận';
                 alert("Đã ghi nhận offline (do lỗi kết nối)!");
@@ -1151,7 +1136,6 @@
         function updateChartReal(polls) {
             const ctx = document.getElementById('usageChart');
             if(!ctx) return;
-            // Kiểm tra xem thư viện ChartJS đã load chưa
             if(typeof Chart === 'undefined') return;
 
             const context = ctx.getContext('2d');
@@ -1419,7 +1403,7 @@
             }
         }
 
-        // --- GAME CẢNH SÁT CHÍNH TẢ (Logic Sửa lỗi) ---
+        // --- GAME CẢNH SÁT CHÍNH TẢ ---
         let spellingTimer = null;
         function startSpellingGame() {
             if(dictionary.length === 0) return;
