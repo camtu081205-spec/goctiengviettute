@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -859,21 +860,49 @@
 
                 // A. CẬP NHẬT TỪ ĐIỂN
                 if (data.dictionary && Array.isArray(data.dictionary)) {
-                    // Nếu Sheet trả về mảng rỗng thì dùng default, còn không thì dùng data từ Sheet
-                    dictionary = data.dictionary.length > 0 ? data.dictionary : defaultDictionaryData;
+                    // MAP DỮ LIỆU TỪ SHEET (CỘT VIỆT) SANG BIẾN JS
+                    dictionary = data.dictionary.map(item => ({
+                        slang: item.TuLong || item.slang || "", 
+                        standard: item.TiengViet || item.standard || "",
+                        context: item.GiaiThich || item.context || "",
+                        origin: "Đóng góp bởi " + (item.HoTen || item.hoten || "Ẩn danh"),
+                        cor: item.TiengCo || item.cor || "[Chưa rõ]",
+                        // QUAN TRỌNG: Lấy đúng cột HoTen để xếp hạng
+                        contributor: item.HoTen || item.hoten || item.Hoten || "Ẩn danh",
+                        classInfo: item.Lop || ""
+                    }));
+
+                    if(dictionary.length === 0) dictionary = defaultDictionaryData;
                     document.getElementById('resultCount').innerText = `Đang hiển thị ${dictionary.length} từ trong kho dữ liệu (Online)`;
                 } else {
                     dictionary = defaultDictionaryData;
                 }
 
                 // B. CẬP NHẬT SỐ LIỆU THỐNG KÊ
-                if (data.stats && data.stats.views) {
-                    animateValue("counter1", 0, data.stats.views, 2000);
+                if (data.stats) {
+                     // Nếu API trả về dạng mảng
+                     if(Array.isArray(data.stats)) {
+                         let viewStat = data.stats.find(s => s.Name === 'PageViews');
+                         if(viewStat) animateValue("counter1", 0, viewStat.Value, 2000);
+                     } 
+                     // Nếu API trả về object
+                     else if (data.stats.views) {
+                        animateValue("counter1", 0, data.stats.views, 2000);
+                     }
                 }
 
                 // C. CẬP NHẬT BÌNH CHỌN
                 if (data.polls && Array.isArray(data.polls)) {
-                    globalPolls = data.polls;
+                    // Map polls data
+                    globalPolls = data.polls.map(p => ({
+                        id: p.ID,
+                        slang: p.TuLong,
+                        standard: p.TiengViet,
+                        voteA: p.VoteA || 0,
+                        voteB: p.VoteB || 0,
+                        active: p.Active
+                    })).filter(p => p.active === true);
+
                     renderVotingSection(globalPolls);
                     updateChartReal(globalPolls);
                     
@@ -881,12 +910,9 @@
                     animateValue("counter2", 0, totalVotes, 2000);
                 }
                 
-                // D. CẬP NHẬT TOP 50 (Nếu có từ API)
-                if (data.topUsers) {
-                    renderTop50(data.topUsers);
-                } else {
-                    renderTop50(); // Render giả lập nếu API chưa trả về
-                }
+                // D. CẬP NHẬT TOP 50 - SỬA LỖI Ở ĐÂY
+                // Luôn luôn tự tính toán từ dictionary để đảm bảo chính xác
+                renderTop50(); 
 
                 renderApp(); // Hiển thị giao diện chính
 
@@ -906,8 +932,6 @@
         // --- CÁC HÀM HIỂN THỊ DỮ LIỆU ---
         function renderApp() {
             if (dictionary.length > 0) {
-                // Sắp xếp dictionary mới nhất lên đầu (nếu muốn)
-                // dictionary.reverse(); 
                 renderCard(0);
                 renderListView(); 
                 renderHotSlangTable();
@@ -964,27 +988,32 @@
             tableBody.innerHTML = html;
         }
 
-        // Hiển thị Top 50 (Giả lập hoặc thật)
+        // Hiển thị Top 50 (ĐÃ SỬA: Tự động tính toán từ dictionary)
         function renderTop50(realData = null) {
             const tbody = document.getElementById('top50Table');
             let html = "";
-            
             let dataToRender = [];
-            if (realData) {
-                dataToRender = realData;
-            } else {
-                // Tạo dữ liệu giả từ dictionary nếu chưa có API topUsers
-                // Lấy danh sách contributor duy nhất và đếm số lần đóng góp
-                let counts = {};
-                dictionary.forEach(d => {
-                   if(d.contributor && d.contributor !== 'Admin') {
-                       counts[d.contributor] = (counts[d.contributor] || 0) + 1;
-                   }
-                });
-                // Chuyển sang mảng và sort
-                dataToRender = Object.keys(counts).map(name => ({name: name, count: counts[name]}));
-                dataToRender.sort((a,b) => b.count - a.count);
-            }
+
+            // Tự động gom nhóm tên người đóng góp
+            let counts = {};
+            dictionary.forEach(item => {
+                // Chuẩn hóa tên: bỏ khoảng trắng thừa
+                let name = item.contributor ? item.contributor.trim() : "";
+                
+                // Chỉ đếm nếu có tên và không phải là Admin/Ẩn danh
+                if (name && name.toLowerCase() !== 'admin' && name.toLowerCase() !== 'ẩn danh') {
+                    counts[name] = (counts[name] || 0) + 1;
+                }
+            });
+
+            // Chuyển object counts thành mảng để sắp xếp
+            dataToRender = Object.keys(counts).map(key => ({
+                name: key,
+                count: counts[key]
+            }));
+
+            // Sắp xếp giảm dần theo số lượng đóng góp
+            dataToRender.sort((a, b) => b.count - a.count);
 
             if(dataToRender.length === 0) {
                  html = `<tr><td colspan="3" style="text-align:center; padding:20px;">Chưa có dữ liệu đóng góp. Hãy là người đầu tiên!</td></tr>`;
@@ -1094,12 +1123,12 @@
                         <span class="word-standard" style="display:block; margin-bottom:5px">"${poll.standard}"</span>
                         <span style="font-size:0.8rem; color:var(--primary-color); font-weight:bold">(${poll.voteB} phiếu)</span>
                     </div>
-                    <button id="btn_${poll.id}" class="vote-btn" ${btnState} onclick="handleRealVote(this, '${poll.id}', ${poll.rowIndex}, 'B')">
+                    <button id="btn_${poll.id}" class="vote-btn" ${btnState} onclick="handleRealVote(this, '${poll.id}', ${poll.id}, 'B')">
                         ${btnText}
                     </button>
                     <div style="margin-top:10px; font-size:0.8rem; color:#666">
                         Bạn thích dùng từ nào hơn? <br>
-                        <button class="btn-tiny-slang" ${btnState} onclick="handleRealVote(this, '${poll.id}', ${poll.rowIndex}, 'A')" style="border:none; background:none; color:#e53935; cursor:pointer; text-decoration:underline;">Thích dùng từ lóng hơn</button>
+                        <button class="btn-tiny-slang" ${btnState} onclick="handleRealVote(this, '${poll.id}', ${poll.id}, 'A')" style="border:none; background:none; color:#e53935; cursor:pointer; text-decoration:underline;">Thích dùng từ lóng hơn</button>
                     </div>
                 </div>
                 `;
@@ -1117,7 +1146,7 @@
 
             const params = new URLSearchParams();
             params.append('action', 'vote');
-            params.append('rowIndex', rowIndex);
+            params.append('id', pollId); // Sửa rowIndex thành id
             params.append('type', type);
 
             fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: params })
