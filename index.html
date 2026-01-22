@@ -837,7 +837,7 @@
     <script>
         // --- CẤU HÌNH LIÊN KẾT (CẬP NHẬT MỚI NHẤT) ---
         // Link Web App Google Script của bạn
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2DFyGIwX7pENRi0NjwRYRTjthCMqM-8zy7IctA5wsGw1v021rvqPC-PBz_-kgPBxc/exec"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvxTvTWbO-HUghrL7ZGvtX2mI9hpoJMbSy84m0Ym4ME1tjpjsajx34_-QT1gb2QKl-/exec"; 
         
         let dictionary = []; 
         let globalPolls = []; 
@@ -848,13 +848,13 @@
         // --- HÀM TẢI DỮ LIỆU TỪ GOOGLE SHEET (Mapping chuẩn xác) ---
         async function loadDataFromSheet() {
             const preloader = document.getElementById('preloader');
-            // Timeout an toàn: Nếu 3 giây không tải xong thì tắt preloader để vào web
+            // Timeout an toàn
             setTimeout(() => {
                 if(preloader && preloader.style.display !== 'none') {
                     preloader.style.opacity = '0';
                     setTimeout(() => { preloader.style.display = 'none'; }, 500);
                 }
-            }, 3000);
+            }, 5000);
 
             try {
                 // Đếm view
@@ -862,43 +862,37 @@
 
                 // Tải dữ liệu
                 let response = await fetch(SCRIPT_URL);
-                if (!response.ok) throw new Error("Network response was not ok");
                 let data = await response.json();
 
-                // 1. Xử lý Dictionary (Mapping với cột trong ảnh bạn gửi: HoTen, TiengCo, etc.)
+                // 1. Xử lý Dictionary
                 if (data && data.dictionary && Array.isArray(data.dictionary)) {
                     dictionary = data.dictionary.map(item => ({
-                        // Ưu tiên key viết hoa (như trong Excel) hoặc viết thường
-                        slang: item.TuLong || item.tuLong || "", 
-                        standard: item.TiengViet || item.tiengViet || "",
-                        context: item.GiaiThich || item.giaiThich || "",
-                        cor: item.TiengCo || item.tiengCo || "[Chưa rõ]", 
-                        contributor: item.HoTen || item.hoTen || "Ẩn danh", 
-                        origin: "Đóng góp bởi " + (item.HoTen || "Admin"),
+                        slang: item.TuLong, 
+                        standard: item.TiengViet,
+                        context: item.GiaiThich,
+                        cor: item.TiengCo || "[Đang cập nhật]", 
+                        contributor: item.HoTen || "Ẩn danh", 
+                        origin: "Nguồn: " + (item.HoTen || "Admin"),
                         classInfo: item.Lop || ""
                     }));
-                } else {
-                    dictionary = [];
                 }
 
-                // 2. Xử lý Stats (Mapping với cột trong ảnh 2: PageViews)
-                if (data.stats) {
-                      if(Array.isArray(data.stats)) {
-                          let viewStat = data.stats.find(s => s.Name === 'PageViews');
-                          if(viewStat) animateValue("counter1", 0, parseInt(viewStat.Value), 2000);
-                      } 
-                }
+                // 2. Xử lý Stats
+                if (data.stats && Array.isArray(data.stats)) {
+                      let viewStat = data.stats.find(s => s.Name === 'PageViews');
+                      if(viewStat) animateValue("counter1", 0, parseInt(viewStat.Value), 2000);
+                } 
 
-                // 3. Xử lý Polls (Mapping với cột trong ảnh 4: VoteA, VoteB)
+                // 3. Xử lý Polls
                 if (data.polls && Array.isArray(data.polls)) {
                     globalPolls = data.polls.map(p => ({
                         id: p.ID,
                         slang: p.TuLong,
                         standard: p.TiengViet,
-                        voteA: parseInt(p.VoteA) || 0, // Chuyển sang số
-                        voteB: parseInt(p.VoteB) || 0, // Chuyển sang số
+                        voteA: parseInt(p.VoteA) || 0,
+                        voteB: parseInt(p.VoteB) || 0,
                         active: p.Active
-                    })).filter(p => p.active === true || p.Active === "TRUE");
+                    })).filter(p => p.active === true || p.active === "TRUE" || p.active === 1);
 
                     renderVotingSection(globalPolls);
                     updateChartReal(globalPolls);
@@ -941,15 +935,17 @@
             
             document.querySelectorAll('.flip-card').forEach(card => card.classList.remove('flipped'));
 
-            document.getElementById('displaySlang').innerText = `"${item.slang}"`;
-            document.getElementById('displayMeaning').innerText = item.standard;
-            document.getElementById('displayOrigin').innerHTML = `<i class="fas fa-history"></i> ${item.origin}`;
-            
-            document.getElementById('displayStandard').innerText = item.standard;
-            document.getElementById('displayContext').innerText = item.context || "Chưa có ngữ cảnh cụ thể";
-            
-            const corText = item.cor && item.cor !== "" ? item.cor : "[Đang cập nhật]";
-            document.getElementById('displayCor').innerText = corText;
+            setTimeout(() => {
+                document.getElementById('displaySlang').innerText = `"${item.slang}"`;
+                document.getElementById('displayMeaning').innerText = item.standard;
+                document.getElementById('displayOrigin').innerHTML = `<i class="fas fa-history"></i> ${item.origin}`;
+                
+                document.getElementById('displayStandard').innerText = item.standard;
+                document.getElementById('displayContext').innerText = item.context || "Chưa có ngữ cảnh cụ thể";
+                
+                const corText = item.cor && item.cor !== "" ? item.cor : "[Đang cập nhật]";
+                document.getElementById('displayCor').innerText = corText;
+            }, 200);
         }
 
         function nextWord() {
@@ -998,7 +994,7 @@
 
             let html = "";
             if(dataToRender.length === 0) {
-                 html = `<tr><td colspan="3" style="text-align:center; padding:20px;">Đang cập nhật dữ liệu...</td></tr>`;
+                  html = `<tr><td colspan="3" style="text-align:center; padding:20px;">Đang cập nhật dữ liệu...</td></tr>`;
             } else {
                 dataToRender.slice(0, 50).forEach((user, index) => {
                     let rank = index + 1;
